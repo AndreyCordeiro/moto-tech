@@ -1,4 +1,4 @@
-import 'package:moto_tech/dominio/dto/dados_veiculo.dart';
+import 'dados_veiculo.dart';
 
 class ClienteDTO {
   late String nome;

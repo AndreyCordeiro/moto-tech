@@ -1,18 +1,19 @@
-import 'package:moto_tech/dominio/entidades/veiculo.dart';
-import 'package:moto_tech/dominio/portas/primaria/interface_entrada_cliente.dart';
+import 'veiculo.dart';
+import '../portas/primaria/interface_entrada_cliente.dart';
 
 class Cliente implements InterfaceEntradaCliente {
   late String nome;
   late String cpf;
-  late int qtdTrocasOleo;
   late Veiculo veiculo;
+  late int qtdServico;
+  late bool proximaGratuita;
 
-  Cliente(String nome, String cpf, int qtdTrocasOleo, Veiculo veiculo) {
-    this.nome = nome;
-    this.cpf = cpf;
-    this.qtdTrocasOleo = qtdTrocasOleo;
-    this.veiculo = veiculo;
-  }
+  Cliente({
+    required String nome,
+    required String cpf,
+    required int qtdTrocasOleo,
+    required Veiculo veiculo,
+  });
 
   @override
   bool validarCpf(String cpf) {
@@ -69,5 +70,18 @@ class Cliente implements InterfaceEntradaCliente {
     if (digitoCalculado > 10) digitoCalculado = 0;
 
     return true;
+  }
+
+  @override
+  bool validarFidelidade({required Cliente cliente}) {
+    if (cliente.qtdServico == 10) {
+      print("Proxima lavagem será gratuita!");
+      return cliente.proximaGratuita = true;
+    }
+
+    print(
+        "Faltam ${10 - cliente.qtdServico} serviços para receber o bônus da fidelidade.");
+    throw Exception(
+        "Faltam ${10 - cliente.qtdServico} serviços para receber o bônus da fidelidade.");
   }
 }
