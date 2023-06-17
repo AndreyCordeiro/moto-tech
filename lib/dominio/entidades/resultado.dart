@@ -1,21 +1,58 @@
+import 'package:intl/intl.dart';
+
+import '../dto/dados_cliente.dart';
+import '../dto/dados_servico.dart';
+import '../dto/dados_veiculo.dart';
+import 'cliente.dart';
+import 'servico.dart';
 import 'veiculo.dart';
 
+class Resultado {
+  Cliente cliente;
+  Veiculo veiculo;
+  Servico servico;
 
-class Cliente implements InterfaceEntradaCliente {
-  late String nome;
-  late String cpf;
-  late Veiculo veiculo;
-  late int qtdServico;
-  late bool proximaGratuita;
-
-  Cliente({
-    required String nome,
-    required String cpf,
-    required int qtdTrocasOleo,
-    required Veiculo veiculo,
+  Resultado({
+    required this.cliente,
+    required this.veiculo,
+    required this.servico,
   });
 
-  @override
+  //   void realizarServico(
+  //     Cliente cliente, String descricao, DateTime tempoServico) {
+  //   var fidelidade = cliente.validarFidelidade(cliente: cliente);
+
+  //   if (cliente.proximaGratuita) {
+  //     valorServico = 0.0;
+  //   }
+
+  //   var servico = Servico(
+  //     cliente: cliente,
+  //     veiculo: cliente.veiculo,
+  //     descricao: descricao,
+  //     tempoServico: tempoServico,
+  //     valorServico: valorServico,
+  //   );
+  // }
+
+  bool estimativaDataEntrega({required Servico servico}) {
+    DateTime now = DateTime.now();
+
+    if (servico.tempoServico < 8) {
+      DateTime dataEntrega = now.add(Duration(hours: servico.tempoServico));
+      String dataFormatada = DateFormat('dd/MM/yyyy').format(dataEntrega);
+      String tempoFormatado = DateFormat('HH:mm').format(dataEntrega);
+
+      if (dataEntrega.hour > 18) {
+        throw Exception("O seu veiculo só estara pronto no dia seguinte!");
+      }
+      print(
+          "Seu veículo estará pronto às $tempoFormatado do dia $dataFormatada");
+      return true;
+    }
+    return false;
+  }
+
   bool validarCpf(String cpf) {
     if (!cpf.contains('.')) return false;
     if (!cpf.contains('-')) return false;
@@ -72,7 +109,6 @@ class Cliente implements InterfaceEntradaCliente {
     return true;
   }
 
-  @override
   bool validarFidelidade({required Cliente cliente}) {
     if (cliente.qtdServico == 10) {
       print("Proxima lavagem será gratuita!");
