@@ -1,7 +1,9 @@
+import 'package:moto_tech/dominio/dto/cliente_dto.dart';
+import '../portas/primaria/i_entrada_cliente.dart';
 import 'veiculo.dart';
 
-
-class Cliente implements InterfaceEntradaCliente {
+class Cliente implements IEntradaCliente {
+  dynamic id;
   late String nome;
   late String cpf;
   late Veiculo veiculo;
@@ -14,6 +16,24 @@ class Cliente implements InterfaceEntradaCliente {
     required int qtdTrocasOleo,
     required Veiculo veiculo,
   });
+
+  bool validarCliente(ClienteDTO clienteDTO) {
+    var cliente = Cliente(
+      nome: clienteDTO.nome,
+      cpf: clienteDTO.cpf,
+      qtdTrocasOleo: clienteDTO.qtdTrocasOleo,
+      veiculo: Veiculo(
+        modelo: clienteDTO.veiculo.modelo,
+        placa: clienteDTO.veiculo.placa,
+      ),
+    );
+
+    if (cliente.validarCpf(cliente.cpf) &&
+        veiculo.validarVeiculo(clienteDTO.veiculo)) {
+      return true;
+    }
+    return false;
+  }
 
   @override
   bool validarCpf(String cpf) {
@@ -79,8 +99,6 @@ class Cliente implements InterfaceEntradaCliente {
       return cliente.proximaGratuita = true;
     }
 
-    print(
-        "Faltam ${10 - cliente.qtdServico} serviços para receber o bônus da fidelidade.");
     throw Exception(
         "Faltam ${10 - cliente.qtdServico} serviços para receber o bônus da fidelidade.");
   }

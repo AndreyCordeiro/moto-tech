@@ -1,4 +1,4 @@
-import 'dados_veiculo.dart';
+import 'veiculo_dto.dart';
 
 class ClienteDTO {
   late String nome;

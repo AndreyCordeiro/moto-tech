@@ -3,6 +3,7 @@ import 'veiculo.dart';
 import 'package:intl/intl.dart';
 
 class Servico {
+  dynamic id;
   late Cliente cliente;
   late Veiculo veiculo;
   late String descricao;
