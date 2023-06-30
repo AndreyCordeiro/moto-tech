@@ -1,4 +1,5 @@
 import 'package:moto_tech/dominio/dto/cliente_dto.dart';
+import 'package:moto_tech/infra/dao_cliente.dart';
 import '../portas/primaria/i_entrada_cliente.dart';
 import 'veiculo.dart';
 
@@ -18,21 +19,11 @@ class Cliente implements IEntradaCliente {
   });
 
   bool validarCliente(ClienteDTO clienteDTO) {
-    var cliente = Cliente(
-      nome: clienteDTO.nome,
-      cpf: clienteDTO.cpf,
-      qtdTrocasOleo: clienteDTO.qtdTrocasOleo,
-      veiculo: Veiculo(
-        modelo: clienteDTO.veiculo.modelo,
-        placa: clienteDTO.veiculo.placa,
-      ),
-    );
+    return validarCpf(clienteDTO.cpf);
+  }
 
-    if (cliente.validarCpf(cliente.cpf) &&
-        veiculo.validarVeiculo(clienteDTO.veiculo)) {
-      return true;
-    }
-    return false;
+  String salvarCliente(ClienteDTO clienteDTO, DaoCliente dao) {
+    return dao.salvarCliente(clienteDTO: clienteDTO);
   }
 
   @override
@@ -101,5 +92,17 @@ class Cliente implements IEntradaCliente {
 
     throw Exception(
         "Faltam ${10 - cliente.qtdServico} serviços para receber o bônus da fidelidade.");
+  }
+
+  @override
+  String getCpf(String cpf) {
+    // TODO: implement getCpf
+    throw UnimplementedError();
+  }
+
+  @override
+  String getNome(String nome) {
+    // TODO: implement getNome
+    throw UnimplementedError();
   }
 }

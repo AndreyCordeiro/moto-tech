@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moto_tech/view/formulario.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.tealAccent),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Moto Tech'),
+      home: const Formulario(),
     );
   }
 }
