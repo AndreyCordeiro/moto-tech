@@ -23,6 +23,11 @@ class Cliente implements IEntradaCliente {
   }
 
   String salvarCliente(ClienteDTO clienteDTO, DaoCliente dao) {
+    // verifica se o próximo serviço vai ser gratuito (bônus)
+    if (validarFidelidade(clienteDTO: clienteDTO)) {
+      clienteDTO.qtdServico++;
+    }
+
     return dao.salvarCliente(clienteDTO: clienteDTO);
   }
 
@@ -84,14 +89,16 @@ class Cliente implements IEntradaCliente {
   }
 
   @override
-  bool validarFidelidade({required Cliente cliente}) {
-    if (cliente.qtdServico == 10) {
-      print("Proxima lavagem será gratuita!");
-      return cliente.proximaGratuita = true;
-    }
+  bool validarFidelidade({required ClienteDTO clienteDTO}) {
+    if (clienteDTO.qtdServico == 10) {
+      clienteDTO.qtdServico = 0;
 
-    throw Exception(
-        "Faltam ${10 - cliente.qtdServico} serviços para receber o bônus da fidelidade.");
+      print("Proxima lavagem será gratuita!");
+      return clienteDTO.proximaGratuita = true;
+    }
+    clienteDTO.qtdServico++;
+
+    return false;
   }
 
   @override

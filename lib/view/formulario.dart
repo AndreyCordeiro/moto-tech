@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:moto_tech/dominio/ddm_agendamento.dart';
-import 'package:moto_tech/dominio/ddm_veiculo.dart';
+import 'package:moto_tech/dominio/dto/agendamento_dto.dart';
 import 'package:moto_tech/dominio/dto/cliente_dto.dart';
+import 'package:moto_tech/dominio/dto/servico_dto.dart';
 import 'package:moto_tech/dominio/dto/veiculo_dto.dart';
-import 'package:moto_tech/infra/dao_agendamento.dart';
 
 class Formulario extends StatelessWidget {
   const Formulario({super.key});
@@ -12,8 +12,27 @@ class Formulario extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     var veiculo = VeiculoDTO(modelo: '', placa: '');
-    var cliente =
-        ClienteDTO(nome: '', cpf: '', qtdTrocasOleo: 0, veiculo: veiculo);
+
+    var cliente = ClienteDTO(
+      nome: '',
+      cpf: '',
+      qtdServico: 0,
+      proximaGratuita: false,
+      veiculo: veiculo,
+    );
+
+    var servico = ServicoDTO(
+      veiculo: veiculo,
+      descricao: '',
+      qtdTrocasOleo: 0,
+      tempoServico: 0,
+    );
+
+    var agendamento = AgendamentoDTO(
+      clienteDTO: cliente,
+      veiculoDTO: veiculo,
+      servicoDTO: servico,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -87,6 +106,37 @@ class Formulario extends StatelessWidget {
                   return null;
                 },
               ),
+              const SizedBox(height: 70.0),
+              const Text(
+                'Dados do Serviço',
+                style: TextStyle(fontSize: 30.0),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  label: Text('Descrição'),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Insira a descrição';
+                  } else {
+                    servico.descricao = value;
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  label: Text('Tempo de serviço'),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Insira o tempo de serviço';
+                  } else {
+                    servico.tempoServico = int.parse(value);
+                  }
+                  return null;
+                },
+              ),
               const SizedBox(height: 30.0),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.5,
@@ -95,8 +145,12 @@ class Formulario extends StatelessWidget {
                     if (_formKey.currentState!.validate()) {
                       var ddmAgendamento = DDMAgendamento();
 
+                      cliente.veiculo = veiculo;
+
                       ddmAgendamento.salvarAgendamento(
-                          clienteDTO: cliente, veiculoDTO: veiculo);
+                        agendamentoDTO: agendamento,
+                        clienteDTO: cliente,
+                      );
                     }
                   },
                   child: const Text('REALIZAR AGENDAMENTO'),

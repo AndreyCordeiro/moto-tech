@@ -1,8 +1,10 @@
 import 'package:moto_tech/dominio/core-private/cliente.dart';
+import 'package:moto_tech/dominio/core-private/servico.dart';
 import 'package:moto_tech/dominio/core-private/veiculo.dart';
 import 'package:moto_tech/dominio/dto/cliente_dto.dart';
 import 'package:moto_tech/dominio/portas/primaria/i_entrada_cliente.dart';
 import 'package:moto_tech/infra/dao_cliente.dart';
+import 'package:moto_tech/infra/dao_servico.dart';
 
 class DDMCliente implements IEntradaCliente {
   late ClienteDTO clienteDTO;
@@ -13,7 +15,7 @@ class DDMCliente implements IEntradaCliente {
       : cliente = Cliente(
           nome: clienteDTO.nome,
           cpf: clienteDTO.cpf,
-          qtdTrocasOleo: clienteDTO.qtdTrocasOleo,
+          qtdTrocasOleo: clienteDTO.qtdServico,
           veiculo: Veiculo(
               modelo: clienteDTO.veiculo.modelo,
               placa: clienteDTO.veiculo.placa),
@@ -22,7 +24,9 @@ class DDMCliente implements IEntradaCliente {
   @override
   String salvarCliente({required ClienteDTO clienteDTO}) {
     var clienteValido = cliente.validarCliente(clienteDTO);
-    if (clienteValido) return cliente.salvarCliente(clienteDTO, idaoVeiculo);
+    if (clienteValido) {
+      return cliente.salvarCliente(clienteDTO, idaoVeiculo);
+    }
 
     print('CPF do cliente inválido!');
     return 'CPF do cliente inválido!';

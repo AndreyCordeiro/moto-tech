@@ -6,8 +6,8 @@ import 'package:moto_tech/dominio/portas/secundaria/i_dao_agendamento.dart';
 class DaoAgendamento implements IDAOAgendamento {
   @override
   String salvarAgendamento(
-      {required ClienteDTO clienteDTO, required VeiculoDTO veiculoDTO}) {
-    print('Agendamento salvo com sucesso!');
-    return 'Agendamento salvo com sucesso!';
+      {required ClienteDTO clienteDTO, required AgendamentoDTO agendamentoDTO}) {
+    print('Agendamento realizado!');
+    return 'Agendamento realizado!';
   }
 }

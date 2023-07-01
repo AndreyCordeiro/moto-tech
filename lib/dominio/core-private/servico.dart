@@ -1,3 +1,7 @@
+import 'package:moto_tech/dominio/dto/servico_dto.dart';
+import 'package:moto_tech/dominio/dto/veiculo_dto.dart';
+import 'package:moto_tech/infra/dao_servico.dart';
+
 import 'cliente.dart';
 import 'veiculo.dart';
 import 'package:intl/intl.dart';
@@ -12,29 +16,35 @@ class Servico {
   late double? valorServico;
 
   Servico({
-    required Cliente cliente,
-    required Veiculo veiculo,
-    required String descricao,
-    required DateTime tempoServico,
+    required this.cliente,
+    required this.veiculo,
+    required this.descricao,
+    required this.tempoServico,
     this.tempoEstimadoEntrega,
     this.valorServico,
   });
 
-  void realizarServico(
-      Cliente cliente, String descricao, DateTime tempoServico) {
-    var fidelidade = cliente.validarFidelidade(cliente: cliente);
+    String salvarServico(ServicoDTO servicoDTO, DaoServico dao) {
+    return dao.salvarServico(servicoDTO: servicoDTO);
+  }
 
-    if (cliente.proximaGratuita) {
-      valorServico = 0.0;
+  DateTime calcularEstimativaEntrega(int tempoServico) {
+    DateTime agora = DateTime.now();
+    DateTime horaEntrega = agora.add(Duration(hours: tempoServico));
+
+    if (horaEntrega.hour >= 18) {
+      horaEntrega = horaEntrega.add(Duration(days: 1));
     }
 
-    var servico = Servico(
-      cliente: cliente,
-      veiculo: cliente.veiculo,
-      descricao: descricao,
-      tempoServico: tempoServico,
-      valorServico: valorServico,
+    horaEntrega = DateTime(
+      horaEntrega.year,
+      horaEntrega.month,
+      horaEntrega.day,
+      18,
+      0,
     );
+
+    return horaEntrega;
   }
 
   @override
