@@ -24,7 +24,7 @@ class Servico {
     this.valorServico,
   });
 
-    String salvarServico(ServicoDTO servicoDTO, DaoServico dao) {
+  String salvarServico(ServicoDTO servicoDTO, DaoServico dao) {
     return dao.salvarServico(servicoDTO: servicoDTO);
   }
 

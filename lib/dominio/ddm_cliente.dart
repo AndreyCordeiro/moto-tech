@@ -1,11 +1,9 @@
 import 'package:moto_tech/dominio/core-private/cliente.dart';
-import 'package:moto_tech/dominio/core-private/servico.dart';
 import 'package:moto_tech/dominio/core-private/veiculo.dart';
 import 'package:moto_tech/dominio/dto/cliente_dto.dart';
 import 'package:moto_tech/dominio/portas/primaria/i_entrada_cliente.dart';
-import 'package:moto_tech/infra/dao_cliente.dart';
-import 'package:moto_tech/infra/dao_servico.dart';
 
+import 'package:moto_tech/infra/dao_cliente.dart';
 class DDMCliente implements IEntradaCliente {
   late ClienteDTO clienteDTO;
   Cliente cliente;
@@ -18,7 +16,8 @@ class DDMCliente implements IEntradaCliente {
           qtdTrocasOleo: clienteDTO.qtdServico,
           veiculo: Veiculo(
               modelo: clienteDTO.veiculo.modelo,
-              placa: clienteDTO.veiculo.placa),
+              placa: clienteDTO.veiculo.placa,
+              ),
         );
 
   @override

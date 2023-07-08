@@ -20,7 +20,6 @@ class Agendamento implements IEntradaAgendamento {
 
   @override
   String salvarAgendamento(AgendamentoDTO agendamentoDTO, DaoAgendamento dao) {
-    return dao.salvarAgendamento(
-        clienteDTO: agendamentoDTO.clienteDTO, agendamentoDTO: agendamentoDTO);
+    return dao.salvarAgendamento(agendamentoDTO: agendamentoDTO);
   }
 }

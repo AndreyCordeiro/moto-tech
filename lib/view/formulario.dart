@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moto_tech/dominio/ddm_agendamento.dart';
+import 'package:moto_tech/dominio/ddm_enviar_email.dart';
 import 'package:moto_tech/dominio/dto/agendamento_dto.dart';
 import 'package:moto_tech/dominio/dto/cliente_dto.dart';
 import 'package:moto_tech/dominio/dto/servico_dto.dart';
@@ -113,7 +114,7 @@ class Formulario extends StatelessWidget {
               ),
               TextFormField(
                 decoration: const InputDecoration(
-                  label: Text('Descrição'),
+                  label: Text('Descrição do Serviço'),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -149,11 +150,24 @@ class Formulario extends StatelessWidget {
 
                       ddmAgendamento.salvarAgendamento(
                         agendamentoDTO: agendamento,
-                        clienteDTO: cliente,
                       );
                     }
                   },
                   child: const Text('REALIZAR AGENDAMENTO'),
+                ),
+              ),
+              const SizedBox(height: 30.0),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      var ddmEmail = DDMEnviarEmail();
+
+                      ddmEmail.enviarEmail(agendamento);
+                    }
+                  },
+                  child: const Text('ENVIAR EMAIL'),
                 ),
               ),
             ],
